@@ -5,15 +5,12 @@ var baseUrl = 'http://localhost:8000/'
 // 模块
 // 把所有的，有关于用户的操作全写在一起
 var user = {
-    logout: function () {
+    logout: function (callback) {
         $.post(baseUrl + 'admin/logout',function(res){
-            if(res.code === 200){
-                // 退出, 回到登陆页
-                window.location.href = "./login.html"
-            } 
+            callback(res)
         })
     }, 
-    login: function(myName, myPassword) {
+    login: function(myName, myPassword, callback) {
         console.log(myName,myPassword)
         $.post(baseUrl + 'admin/login',
             {
@@ -21,27 +18,14 @@ var user = {
                 password:myPassword
             },
             function(res){
-                console.log(res);
-                if(res.code === 200){
-                    // window.alert('登陆成功')
-                    location.href= './index.html'
-                } else {
-                    // alert(res.msg)
-                    $('#msgInfo').text(res.msg)
-                    $('#myModal').modal('show')
-                }
+                callback(res)
             }
         )
     },
-    getInfo: function() {
+    getInfo: function(callback) {
         // $.get(地址，参数，回调)
         $.get(baseUrl + 'admin/getuser',function(res){
-            console.log(res);
-            if(res.code === 200){
-                $("#userImg").prop('src', res.data.user_pic)
-                $('#userName').text(res.data.nickname)
-            }
-            
+            callback(res)
         })
     }
 }

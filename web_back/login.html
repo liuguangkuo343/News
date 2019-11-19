@@ -70,7 +70,17 @@
             // 发请求，根据返回结果，提示用户
             // $.post(地址，参数，回调)
             // 语义化
-            user.login(myName, myPassword)
+            user.login(myName, myPassword,function(res){
+                console.log(res);
+                if(res.code === 200){
+                    // window.alert('登陆成功')
+                    location.href= './index.html'
+                } else {
+                    // alert(res.msg)
+                    $('#msgInfo').text(res.msg)
+                    $('#myModal').modal('show')
+                }
+            })
         })
     </script>
 </body>

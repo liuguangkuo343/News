@@ -101,19 +101,7 @@
         }
 
     </script>
-    <script>
-        var user = {
-            logout: function () {
-                $.post('http://localhost:8000/admin/logout',function(res){
-                    if(res.code === 200){
-                        // 退出, 回到登陆页
-                        window.location.href = "./login.html"
-                    } 
-                })
-
-            }
-        }
-    </script>
+    <script src="./js/utils/user.js"></script>
     <script>
         $('#btnLogout').click(function() {
             // $.post(地址，参数，回调)

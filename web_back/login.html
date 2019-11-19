@@ -52,30 +52,7 @@
 
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
-    <script>
-        var user = {
-            login: function(myName, myPassword) {
-                console.log(myName,myPassword)
-                $.post('http://localhost:8000/admin/login',
-                    {
-                        user_name: myName, 
-                        password:myPassword
-                    },
-                    function(res){
-                        console.log(res);
-                        if(res.code === 200){
-                            // window.alert('登陆成功')
-                            location.href= './index.html'
-                        } else {
-                            // alert(res.msg)
-                            $('#msgInfo').text(res.msg)
-                            $('#myModal').modal('show')
-                        }
-                    }
-                )
-            }
-        }
-    </script>
+    <script src="./js/utils/user.js"></script>
     <script>
         $('#btnLogin').click(function() {
             // 获取用户名和密码

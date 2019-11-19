@@ -2,6 +2,8 @@
 
 var baseUrl = 'http://localhost:8000/'
 
+// 模块
+// 把所有的，有关于用户的操作全写在一起
 var user = {
     logout: function () {
         $.post(baseUrl + 'admin/logout',function(res){
@@ -30,5 +32,16 @@ var user = {
                 }
             }
         )
+    },
+    getInfo: function() {
+        // $.get(地址，参数，回调)
+        $.get(baseUrl + 'admin/getuser',function(res){
+            console.log(res);
+            if(res.code === 200){
+                $("#userImg").prop('src', res.data.user_pic)
+                $('#userName').text(res.data.nickname)
+            }
+            
+        })
     }
 }

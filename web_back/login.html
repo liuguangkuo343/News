@@ -53,11 +53,35 @@
     <script src="./js/jquery-1.12.4.min.js"></script>
     <script src="./js/bootstrap/js/bootstrap.min.js"></script>
     <script>
+        var user = {
+            login: function(myName, myPassword) {
+                console.log(myName,myPassword)
+                $.post('http://localhost:8000/admin/login',
+                    {
+                        user_name: myName, 
+                        password:myPassword
+                    },
+                    function(res){
+                        console.log(res);
+                        if(res.code === 200){
+                            // window.alert('登陆成功')
+                            location.href= './index.html'
+                        } else {
+                            // alert(res.msg)
+                            $('#msgInfo').text(res.msg)
+                            $('#myModal').modal('show')
+                        }
+                    }
+                )
+            }
+        }
+    </script>
+    <script>
         $('#btnLogin').click(function() {
             // 获取用户名和密码
             var myName = $('#myName').val().trim()
             var myPassword = $('#myPassword').val().trim()
-            console.log(myName, myPassword);
+            // console.log(myName, myPassword);
             
             // 判断是否为空
             if(myName === '' || myPassword === ''){
@@ -68,26 +92,10 @@
             }
             // 发请求，根据返回结果，提示用户
             // $.post(地址，参数，回调)
-            $.post('http://localhost:8000/admin/login',
-                {
-                    user_name: myName, 
-                    password:myPassword
-                },
-                function(res){
-                    console.log(res);
-                    if(res.code === 200){
-                        // window.alert('登陆成功')
-                        location.href= './index.html'
-                    } else {
-                        // alert(res.msg)
-                        $('#msgInfo').text(res.msg)
-                        $('#myModal').modal('show')
-                    }
-                }
-            )
+            // 语义化
+            user.login(myName, myPassword)
         })
     </script>
-
 </body>
 
 </html>

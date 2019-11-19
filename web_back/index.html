@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
     <link rel="stylesheet" href="css/main.css">
-    <script src="js/jquery-1.12.4.min.js"></script>
+    
 </head>
 
 <body>
@@ -44,14 +44,14 @@
         <div class="user_center_link">
             <a href="user.html" onclick="setMenu(3,0)" target="main_frame">个人中心</a>
             <img src="images/2.jpg" alt="person">
-            <a href="#"><i class="iconfont icon-tuichu"></i> 退出</a>
+            <a href="javascript:;" id="btnLogout"><i class="iconfont icon-tuichu"></i> 退出</a>
         </div>
     </div>
 
     <div class="main" id="main_body">
         <iframe src="main_count.html" frameborder="0" id="main_frame" name="main_frame" frameborder="0" scrolling="auto"></iframe>
     </div>
-
+    <script src="js/jquery-1.12.4.min.js"></script>
     <script>
         var $level01 = $('.level01');
         var $subli = $('.level02 li')
@@ -100,6 +100,25 @@
            }
         }
 
+    </script>
+    <script>
+        var user = {
+            logout: function () {
+                $.post('http://localhost:8000/admin/logout',function(res){
+                    if(res.code === 200){
+                        // 退出, 回到登陆页
+                        window.location.href = "./login.html"
+                    } 
+                })
+
+            }
+        }
+    </script>
+    <script>
+        $('#btnLogout').click(function() {
+            // $.post(地址，参数，回调)
+            user.logout()
+        })
     </script>
 </body>
 </html>

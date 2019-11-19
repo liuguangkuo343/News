@@ -1,6 +1,10 @@
+// 把基础信息提炼出来，以全局变量的格式保存
+
+var baseUrl = 'http://localhost:8000/'
+
 var user = {
     logout: function () {
-        $.post('http://localhost:8000/admin/logout',function(res){
+        $.post(baseUrl + 'admin/logout',function(res){
             if(res.code === 200){
                 // 退出, 回到登陆页
                 window.location.href = "./login.html"
@@ -9,7 +13,7 @@ var user = {
     }, 
     login: function(myName, myPassword) {
         console.log(myName,myPassword)
-        $.post('http://localhost:8000/admin/login',
+        $.post(baseUrl + 'admin/login',
             {
                 user_name: myName, 
                 password:myPassword

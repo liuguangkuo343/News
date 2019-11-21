@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>文章列表</title>
+    <title>文章类别管理</title>
     <link rel="stylesheet" href="js/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/iconfont.css">
@@ -130,7 +130,16 @@
               }
           })      
       </script>
-
+    <script src="./js/utils/category.js"></script>
+    
+    <script>
+        category.show(function(res){
+            // res 就是从服务器中获取的数据
+            console.log(res);
+            // 把数据拼接成html字符串，显示在tbody中
+            
+        })
+    </script>
 </body>
 
 </html>

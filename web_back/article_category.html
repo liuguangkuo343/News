@@ -28,7 +28,7 @@
                         <th class="text-center" width="100">操作</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="cateContainer">
                     <tr>
                         <td>未分类</td>
                         <td>uncategorized</td>
@@ -59,15 +59,7 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>爱旅行</td>
-                        <td>travel</td>
-                        <td class="text-center">
-                            <a href="javascript:editTr({&quot;id&quot;:&quot;4&quot;,&quot;slug&quot;:&quot;travel&quot;,&quot;name&quot;:&quot;爱旅行&quot;});"
-                                class="btn btn-info btn-xs">编辑</a>
-                            <a href="javascript:deleteTr( 4 );" class="btn btn-danger btn-xs">删除</a>
-                        </td>
-                    </tr>
+                    
                 </tbody>
                 <tfoot>
                     <tr>
@@ -130,14 +122,37 @@
               }
           })      
       </script>
+
+    <script src="./js/utils/config.js"></script>
     <script src="./js/utils/category.js"></script>
-    
+    <script src="./js/template-web.js"></script>
+    <!-- {{each 数组 当前项 当前下标}} -->
+    <script type="text/html" id="temp">
+        {{each data item}}
+        <tr>
+            <td>{{item.name}}</td>
+            <td>{{item.slug}}</td>
+            <td class="text-center">
+                <a href="javascript:editTr({&quot;id&quot;:&quot;4&quot;,&quot;slug&quot;:&quot;travel&quot;,&quot;name&quot;:&quot;爱旅行&quot;});"
+                    class="btn btn-info btn-xs">编辑</a>
+                <a href="javascript:deleteTr( 4 );" class="btn btn-danger btn-xs">删除</a>
+            </td>
+        </tr>
+        {{/each}}
+    </script>
     <script>
         category.show(function(res){
             // res 就是从服务器中获取的数据
-            console.log(res);
-            // 把数据拼接成html字符串，显示在tbody中
-            
+            // console.log(res);
+            if(res.code === 200){
+                // res:{code, data:[]}
+                // 把数据拼接成html字符串，显示在tbody中
+                // var htmlStr = template('id',数据)
+                var htmlStr = template("temp", res)
+                console.log(htmlStr);
+                // 显示在dom容器中
+                $('#cateContainer').html(htmlStr)
+            }
         })
     </script>
 </body>

@@ -97,7 +97,7 @@
             <td class="text-center">{{item.state}}</td>
             <td class="text-center">
                 <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
-                <a href="javascript:deleteTr( 1005 );" class="btn btn-danger btn-xs">删除</a>
+                <a href="javascript:;" data-id="{{item.id}}" class="btn btn-danger btn-xs del">删除</a>
             </td>
         </tr>
         {{/each}}
@@ -134,6 +134,7 @@
         var curTotalPage = ''; // 表示当前查询总页数
 
         getAndShow();
+
         // 获取数据，并展示在表格中
         function getAndShow() {
             article.show(curPage,type,state,function(res){
@@ -200,6 +201,24 @@
             getAndShow()
         })
         
+        // 文章删除
+        $('#articleContainer').on('click','.del', function(){
+            if(window.confirm('确认要删除吗？') === false){
+                return;
+            }
+            // 从dom中取出自定义 属性
+            var id = $(this).attr('data-id')
+            
+            // 去调用 article.js中的方法，去做删除
+            console.log(id);
+            article.del(id,function(res){
+                if(res.code === 200){
+                    // 删除成功，重新请求
+                    getAndShow()
+                }
+
+            })
+        })
     </script>
 
 </body>

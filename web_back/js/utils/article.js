@@ -12,5 +12,11 @@ var article = {
             function(res){
             callback(res)
         })
+    },
+    // 删除文章
+    del: function(id,callback){
+        $.get(APIURLS.article_del,{'id': id},function(res){
+            callback(res)
+        })
     }
 }

@@ -130,6 +130,9 @@
         var curPage = ''; // 表示当前要展示第几页
         var type = ''; // 表示文章的类型
         var state = ''; // 表示文章的状态
+
+        var curTotalPage = ''; // 表示当前查询总页数
+
         getAndShow();
         // 获取数据，并展示在表格中
         function getAndShow() {
@@ -147,6 +150,19 @@
                     $('#articleContainer').html( htmlStr )
 
                     // 2. 实现分页
+                    // 如果前后两次查询结果得到的总页数不相同。
+                    // 则需要destory()分页插件，再做初始化
+                    
+                    if(curTotalPage != res.totalPage){
+                        console.log( '前后两次查询结果得到的总页数不相同')
+                        console.log( curTotalPage, res.totalPage)
+                        // 由于插件对总页数的变化不敏感，所以如果总页数不同，则要
+                        // 先销毁，再创建
+                        // 参考：http://josecebe.github.io/twbs-pagination/
+                        $('#pagination').twbsPagination('destroy');
+                        curTotalPage = res.totalPage
+                    }
+
                     $('#pagination').twbsPagination(
                         {
                             totalPages: res.totalPage, // 总页数
@@ -176,6 +192,9 @@
             type = $('#selCategory').val()
             state = $('#selStatus').val()
             console.log(type,state);
+
+            // 筛选条件变化，直接固定选第一页
+            curPage = 1
             
             // 2. 重发请求
             getAndShow()

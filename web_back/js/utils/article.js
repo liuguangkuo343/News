@@ -18,5 +18,19 @@ var article = {
         $.get(APIURLS.article_del,{'id': id},function(res){
             callback(res)
         })
+    },
+    // 添加文章
+    // 参数是formData对象
+    add: function(fd, callback){
+        $.ajax({
+            url: APIURLS.article_add,
+            type: 'post',
+            data: fd,
+            processData: false, // 不要让jquery去处理formdata数据
+            contentType: false, // 不要使用默认的请求头
+            success:function(res){
+                callback(res)
+            }
+        })
     }
 }

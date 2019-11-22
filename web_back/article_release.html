@@ -81,6 +81,7 @@
     </div>
     <script src="./js/utils/config.js"></script>
     <script src="./js/utils/category.js"></script>
+    <script src="./js/utils/article.js"></script>
     <script src="./js/template-web.js"></script>
     <!-- //定义模板 -->
     <!-- {{each 数组 当前元素 当前下标}} -->
@@ -140,15 +141,12 @@
 
             // 发请求，调用接口.
             // 在article.js中准备一个添加文章的方法
-            $.ajax({
-                url: 'http://localhost:8000/admin/article_publish',
-                type: 'post',
-                data: fd,
-                processData: false, // 不要让jquery去处理formdata数据
-                contentType: false, // 不要使用默认的请求头
-                success:function(res){
-                    console.log(res);
-                    
+            article.add(fd, function(res){
+                console.log(res);
+                if(res.code === 201){
+                    alert('添加成功')
+                } else {
+                    alert(res.msg)
                 }
             })
         })

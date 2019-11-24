@@ -56,5 +56,10 @@ var article = {
             }
         )
     },
+    getMonthCount:function(callback){
+        $.get(APIURLS.article_month_count,function(res){
+            callback(res)
+        })
+    }
 
 }

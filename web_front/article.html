@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="css/reset.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
 </head>
 
 <body>
@@ -97,35 +98,15 @@
                 4条评论
             </div>
 
-            <div class="comment_list_con">
-                <div class="comment_detail_list">
+            <div class="comment_list_con" id="comment_list">
+                <!-- <div class="comment_detail_list">
                     <div class="person_pic fl">乔</div>
                     <div class="name_time fl"><b>虚竹</b><span>4小时前</span></div>
                     <div class="comment_text fl">
                         遏制茅台酒价格过快上涨，多渠道供给，就不一定要买，租茅台酒也可以的，租售同权。开发共有产权茅台酒，让老百姓喝得起茅台酒，饮者有其酒。
                     </div>
-                </div>
-                <div class="comment_detail_list">
-                    <div class="person_pic fl">段</div>
-                    <div class="name_time fl"><b>虚竹</b><span>4小时前</span></div>
-                    <div class="comment_text fl">
-                        遏制茅台酒价格过快上涨，多渠道供给，就不一定要买，租茅台酒也可以的，租售同权。开发共有产权茅台酒，让老百姓喝得起茅台酒，饮者有其酒。
-                    </div>
-                </div>
-                <div class="comment_detail_list">
-                    <div class="person_pic fl">虚</div>
-                    <div class="name_time fl"><b>虚竹</b><span>4小时前</span></div>
-                    <div class="comment_text fl">
-                        遏制茅台酒价格过快上涨，多渠道供给，就不一定要买，租茅台酒也可以的，租售同权。开发共有产权茅台酒，让老百姓喝得起茅台酒，饮者有其酒。
-                    </div>
-                </div>
-                <div class="comment_detail_list">
-                    <div class="person_pic fl">王</div>
-                    <div class="name_time fl"><b>虚竹</b><span>4小时前</span></div>
-                    <div class="comment_text fl">
-                        遏制茅台酒价格过快上涨，多渠道供给，就不一定要买，租茅台酒也可以的，租售同权。开发共有产权茅台酒，让老百姓喝得起茅台酒，饮者有其酒。
-                    </div>
-                </div>
+                </div> -->
+                
             </div>
         </div>
         <div class="right_con setfl">
@@ -204,12 +185,41 @@
         <p>CopyRight © 2019 深圳大事件信息技术股份有限公司 All Rights Reserved</p>
         <p>电话：0755-****888 粤ICP备*******8号</p>
     </div>
+    
     <script src="./js/jquery-1.12.4.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
+    <script src="./js/bootbox.min.js"></script>
+
     <script src="./js/utils/config.js"></script>
     <script src="./js/utils/article.js"></script>
     <script src="./js/utils/category.js"></script>
     <script src="./js/utils/comment.js"></script>
+    <script src="./js/template-web.js"></script>
+
+    <script src="./js/dayjs/dayjs.min.js"></script>
+    <script src="./js/dayjs/relative.min.js"></script>
+    <script src="./js/dayjs/zh_cn.js"></script>
+    
+
+    <script id="temp_comment" type="text/html">
+        {{each data item}}
+        <div class="comment_detail_list">
+            <div class="person_pic fl">{{item.name.substr(0,1)}}</div>
+            <div class="name_time fl"><b>{{item.name}}</b><span>{{item.relativeDt}}</span></div>
+            <div class="comment_text fl">
+                {{item.content}}
+            </div>
+        </div>
+        {{/each}}
+    </script>
     <script>
+        // dayjs使用插件
+        // 因为你引入了 “relative.min.js”，
+        // 所以就有了 dayjs_plugin_relativeTime
+        dayjs.extend(dayjs_plugin_relativeTime)
+
+        // dayjs设置语言
+        dayjs.locale('zh-cn')
         // 1. 从地址栏中获取id
         // http://127.0.0.1:5500/web_front/article.html?id=1574515438675
         var id = location.search.substr(4);
@@ -262,7 +272,9 @@
             var content = $('#comment_content').val().trim();
             // 2.判断是否为空
             if(name === '' || content === ''){
-                alert('不能为空')
+             //    bootBox.js来代替alert
+                alert('不能为空');//
+                bootbox.alert("不能为空!");
                 return;
             }
             // 3. 调用方法，添加 
@@ -273,10 +285,31 @@
                     $('#comment_name').val('')
                     $('#comment_content').val('')
                     // 再次加载显示留言
+                    getAndShow()
                 }
                 
             } )
         })
+    
+        // 获取评论
+        function getAndShow(){
+            comment.get(id, function(res){
+                console.log(res.data);
+                res.data.reverse()
+                // 对于所有的评论数据，给每一条数据中额外添加一个相对时间的属性
+                // 然后，在模板引擎中使用这个属性
+                res.data.forEach(function(item){
+                    item.relativeDt =  dayjs(item.dt).toNow()
+                })
+                console.log(res.data)
+                // 用模板引擎 渲染数据
+                var htmlStr = template('temp_comment',res);
+                $('#comment_list').html( htmlStr )
+                
+            })
+        }
+        getAndShow();
+        
     </script>
 
 </body>
